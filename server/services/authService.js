@@ -11,3 +11,7 @@ module.exports.authService = async (password) => {
 module.exports.jwtToken = (user) => {
     return jwt.sign(user, JWT_TOKEN, {expiresIn: '7d'});
 }
+
+module.exports.comparePassword = async (password, dbPassword) => {
+    return await bcrypt.compare(password, dbPassword);
+}
