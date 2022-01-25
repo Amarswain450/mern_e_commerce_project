@@ -5,6 +5,7 @@ import {
     Route
 } from "react-router-dom";
 import AuthLogin from '../components/auth/AuthLogin';
+import Products from '../components/dashboard/Products';
 
 const Routing = () => {
     return (
@@ -13,6 +14,9 @@ const Routing = () => {
                 <Routes>
                     <Route path="auth">
                         <Route path="auth-login" element={<AuthLogin />} />
+                    </Route>
+                    <Route path="dashboard">
+                        <Route path="products" element={<Products />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

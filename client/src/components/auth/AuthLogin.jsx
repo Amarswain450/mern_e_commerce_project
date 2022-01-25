@@ -1,7 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useAuthLoginMutation } from '../../redux-toolkit/services/authService';
+import { setAdminToken } from '../../redux-toolkit/reducers/authReducer';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const AuthLogin = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const [loginData, setLoginData] = useState({
         email: '',
         password: ''
@@ -23,6 +29,14 @@ const AuthLogin = () => {
         e.preventDefault();
         login(loginData)
     }
+
+    useEffect(() => {
+        if(response.isSuccess){
+            window.localStorage.setItem('admin-token', response?.data?.token);
+            dispatch(setAdminToken(response?.data?.token));
+            navigate('/dashboard/products');
+        }
+    },[response.isSuccess]);
 
     const {email, password} = loginData;
     return (
