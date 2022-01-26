@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 import AuthLogin from '../components/auth/AuthLogin';
 import Products from '../components/dashboard/Products';
+import Private from './Private';
+import Public from './Public';
 
 const Routing = () => {
     return (
@@ -13,10 +15,10 @@ const Routing = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path="auth">
-                        <Route path="auth-login" element={<AuthLogin />} />
+                        <Route path="auth-login" element={<Public><AuthLogin /></Public>} />
                     </Route>
                     <Route path="dashboard">
-                        <Route path="products" element={<Products />} />
+                        <Route path="products" element={<Private><Products /></Private>} />
                     </Route>
                 </Routes>
             </BrowserRouter>
