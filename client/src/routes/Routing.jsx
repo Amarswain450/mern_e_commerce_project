@@ -4,8 +4,8 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-import AuthLogin from '../components/auth/AuthLogin';
-import Products from '../components/dashboard/Products';
+import AuthLogin from '../screens/auth/AuthLogin';
+import Products from '../screens/dashboard/Products';
 import Private from './Private';
 import Public from './Public';
 
