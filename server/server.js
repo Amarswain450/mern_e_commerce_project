@@ -19,6 +19,8 @@ app.use(bodyParser.json());
 //config router
 const router = require('./routes/users');
 app.use('/api', router);
+const category = require('./routes/category');
+app.use('/api', category);
 
 
 app.listen(port, () => {
