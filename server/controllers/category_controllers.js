@@ -10,7 +10,7 @@ class CategoryController{
                 const exist = await Category.findOne({name});
                 if(!exist){
                     await Category.create({name});
-                    return res.status(201).json({message: 'category has created'})
+                    return res.status(201).json({message: 'Your category has created'})
                 }else{
                     return res.status(400).json({ errors: [{msg: `${name} category is already taken`}] }); 
                 }
