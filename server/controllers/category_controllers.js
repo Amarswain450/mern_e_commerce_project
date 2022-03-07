@@ -22,6 +22,19 @@ class CategoryController{
             return res.status(400).json({ errors: errors.array() });
         }
     }
+
+    async categories(req, res){
+        const page = req.params.page;
+        const perPage = 3;
+        const skip = (page - 1) * 3;
+        try{
+            const count = await Category.find({}).countDocuments();
+            const response = await Category.find({}).skip(skip).limit(perPage).sort({updatedAt: -1});
+            return res.status(200).json({categories: response, perPage, count});
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 }
 
 module.exports = new CategoryController;
