@@ -14,7 +14,6 @@ const categoryService = createApi({
             return headers;
         }
     }),
-    tagTypes: ['Posts'],
     endpoints: (builder) => ({
         createCategory: builder.mutation({
             query: (name) => {
@@ -24,9 +23,16 @@ const categoryService = createApi({
                     body: name
                 }
             }
+        }),
+        getCategory: builder.query({
+            query: (page) => {
+                return {
+                    url: `categories/${page}`
+                }
+            }
         })
     })
 });
 
-export const {useCreateCategoryMutation} = categoryService;
+export const {useCreateCategoryMutation, useGetCategoryQuery} = categoryService;
 export default categoryService;

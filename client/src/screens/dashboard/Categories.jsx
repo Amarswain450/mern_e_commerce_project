@@ -1,14 +1,19 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Link} from "react-router-dom"
+import {Link, useParams} from "react-router-dom"
 import ScreenHeader from "../../components/ScreenHeader";
 import { clearCategory } from "../../redux-toolkit/reducers/categoryReducer";
+import { useGetCategoryQuery } from "../../redux-toolkit/services/createService";
 import Wrapper from "./Wrapper"
 
 
 const Categories = () => {
+    const {page} = useParams();
     const {success} = useSelector((state) => state.categoryReducer);
     const dispatch = useDispatch();
+
+    const {data, isLoading} = useGetCategoryQuery(page);
+    console.log(data, isLoading);
 
     useEffect(() => {
         return () => {
