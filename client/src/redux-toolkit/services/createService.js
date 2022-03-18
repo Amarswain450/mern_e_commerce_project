@@ -29,13 +29,22 @@ const categoryService = createApi({
         getCategory: builder.query({
             query: (page) => {
                 return {
-                    url: `categories/${page}`
+                    url: `categories/${page}`,
+                    method: "GET"
                 }
             },
             providesTags: ['categories']
+        }),
+        getParticularCategory: builder.query({
+            query: (id) => {
+                return {
+                    url: `update-category/${id}`,
+                    method: "GET"
+                }
+            }
         })
     })
 });
 
-export const {useCreateCategoryMutation, useGetCategoryQuery} = categoryService;
+export const {useCreateCategoryMutation, useGetCategoryQuery, useGetParticularCategoryQuery} = categoryService;
 export default categoryService;

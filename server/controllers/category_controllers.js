@@ -35,6 +35,17 @@ class CategoryController{
             console.log(error.message);
         }
     }
+
+    async fetchParticularCategory(req, res){
+        const {id} = req.params;
+        try{
+            const response = await Category.findOne({_id: id});
+            console.log(response);
+            return res.status(200).json({category: response});
+        }catch(error){
+            console.log(error.message);
+        }
+    }
 }
 
 module.exports = new CategoryController;
