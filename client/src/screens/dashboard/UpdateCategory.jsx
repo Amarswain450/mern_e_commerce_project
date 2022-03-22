@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import {Link, useNavigate, useParams} from "react-router-dom"
 import ScreenHeader from "../../components/ScreenHeader";
 import Spinner from '../../components/Spinner';
-import { useGetParticularCategoryQuery } from '../../redux-toolkit/services/createService';
+import { addCategory } from '../../redux-toolkit/reducers/categoryReducer';
+import { useGetParticularCategoryQuery, useUpdateCategoryMutation } from '../../redux-toolkit/services/createService';
 import Wrapper from "./Wrapper";
 
 
@@ -24,11 +25,22 @@ const UpdateCategory = () => {
         data?.category && setCategory(data?.category?.name);
     }, [data?.category]);
 
-    // const errors = data?.error?.data?.errors ? data?.error?.data?.errors : []
+    const [updateCategoryMethod, response] = useUpdateCategoryMutation();
+    console.log("update", response);
+
+    const errors = response?.error?.data?.errors ? response?.error?.data?.errors : []
 
     const updateCategory = (e) => {
         e.preventDefault();
+        updateCategoryMethod({name:category, id});
     }
+
+    useEffect(() => {
+        if(response.isSuccess){
+            dispatch(addCategory(response?.data?.message));
+            navigate('/dashboard/categories');
+        }
+    }, [response?.isSuccess])
 
 
     return(
@@ -41,13 +53,13 @@ const UpdateCategory = () => {
                (
                     <form className="w-full md:w-8/12" onSubmit={updateCategory}>
                         <h3 className="text-lg capitalize mb-3">update category</h3>
-                        {/* {errors.length > 0 && errors.map((error, key) => (
+                        {errors.length > 0 && errors.map((error, key) => (
                             <p className="alert-danger" key={key}>{error.msg}</p>
-                        ))} */}
+                        ))}
                         <div className="mb-3">
                             <input 
                                 type="text" 
-                                name="" 
+                                name="category" 
                                 value={category}
                                 onChange={categoryChange}
                                 className="form-control" 

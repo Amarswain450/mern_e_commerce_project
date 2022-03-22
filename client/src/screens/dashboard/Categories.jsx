@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {Link, useParams} from "react-router-dom"
+import {Link, useNavigate, useParams} from "react-router-dom"
 import Pagination from "../../components/Pagination";
 import ScreenHeader from "../../components/ScreenHeader";
 import Spinner from "../../components/Spinner";
-import { clearCategory } from "../../redux-toolkit/reducers/categoryReducer";
-import { useGetCategoryQuery } from "../../redux-toolkit/services/createService";
+import { addCategory, clearCategory } from "../../redux-toolkit/reducers/categoryReducer";
+import { useDeleteCategoryMutation, useGetCategoryQuery } from "../../redux-toolkit/services/createService";
 import Wrapper from "./Wrapper"
 
 
@@ -16,6 +16,7 @@ const Categories = () => {
     }
     const {success} = useSelector((state) => state.categoryReducer);
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const {data = [], isLoading} = useGetCategoryQuery(page);
     console.log(data, isLoading);
@@ -25,6 +26,22 @@ const Categories = () => {
             dispatch(clearCategory());
         }
     },[]);
+
+    const [removeCategory, response] = useDeleteCategoryMutation();
+    console.log("delete", response);
+
+    const deletCategory = (id) => {
+       if(window.confirm('Are you really want to delete the category?')){
+         removeCategory(id);
+       }
+    }
+
+    useEffect(() => {
+       if(response?.isSuccess){
+         dispatch(addCategory(response?.data?.message));
+         navigate('/dashboard/categories');
+       }
+    },[response?.isSuccess]);
     return(
        <Wrapper>
            <ScreenHeader>
@@ -48,7 +65,7 @@ const Categories = () => {
                               <tr key={category._id} className="odd:bg-gray-800">
                                  <td className="p-3 capitalize text-sm font-normal text-gray-400">{category.name}</td>
                                  <td className="p-3 capitalize text-sm font-normal text-gray-400"><Link to={`/dashboard/update-category/${category._id}`} className="btn btn-warning">edit</Link></td>
-                                 <td className="p-3 capitalize text-sm font-normal text-gray-400"><button>delete</button></td>
+                                 <td className="p-3 capitalize text-sm font-normal text-gray-400"><button className="btn btn-danger" onClick={() => deletCategory(category._id)}>delete</button></td>
                               </tr>
                            ))}
                         </tbody>
