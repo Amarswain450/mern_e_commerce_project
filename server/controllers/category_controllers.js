@@ -79,6 +79,16 @@ class CategoryController{
             return res.status(500).json("server error...!!!");
         }
     }
+
+    async getAllCategories(req, res){
+        try{
+            const categories = await Category.find({});
+            return res.status(200).json({categories})
+        }catch(error){
+            console.log(err.message);
+            return res.status(500).json("server error...!!!");
+        }
+    }
 }
 
 module.exports = new CategoryController;
