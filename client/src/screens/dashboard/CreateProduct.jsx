@@ -8,6 +8,7 @@ import { TwitterPicker } from "react-color"
 import { v4 as uuidv4 } from 'uuid';
 import Colors from '../../components/Colors'
 import SizesList from '../../components/SizesList'
+import ImagesPreviews from '../../components/ImagesPreviews'
 
 const CreateProduct = () => {
     const { data = [], isFetching } = useGetAllCategoriesQuery();
@@ -18,8 +19,17 @@ const CreateProduct = () => {
         discount: 0,
         stock: 0,
         category: '',
-        colors: []
+        colors: [],
+        image1: '',
+        image2: '',
+        image3: ''
     });
+
+    const [preview, setPreview] = useState({
+        image1: '',
+        image2: '',
+        image3: ''
+    })
 
     const [sizes] = useState([
         { name: 'xsm' },
@@ -67,7 +77,16 @@ const CreateProduct = () => {
         setSizeList(filtered)
     }
 
-    const imageHandle = () => { }
+    const imageHandle = (e) => {
+        if(e.target.files.length !== 0){
+            setState({...state, [e.target.name]: e.target.files[0]});
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview({...preview, [e.target.name]: reader.result});
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    }
 
 
     return (
@@ -153,27 +172,48 @@ const CreateProduct = () => {
                             <label htmlFor="image1" className="label">
                                 Image 1
                             </label>
-                            <input type="file" name="image1" id="image1" className="input-file" onChange={imageHandle} />
+                            <input 
+                                type="file" 
+                                name="image1" 
+                                id="image1" 
+                                className="input-file" 
+                                onChange={imageHandle} 
+                            />
                         </div>
 
                         <div className="w-full p-3">
                             <label htmlFor="image2" className="label">
                                 Image 2
                             </label>
-                            <input type="file" name="image2" id="image2" className="input-file" onChange={imageHandle} />
+                            <input 
+                                type="file" 
+                                name="image2" 
+                                id="image2" 
+                                className="input-file" 
+                                onChange={imageHandle} 
+                            />
                         </div>
 
                         <div className="w-full p-3">
                             <label htmlFor="image3" className="label">
                                 Image 3
                             </label>
-                            <input type="file" name="image3" id="image3" className="input-file" onChange={imageHandle} />
+                            <input 
+                                type="file" 
+                                name="image3" 
+                                id="image3" 
+                                className="input-file" 
+                                onChange={imageHandle} 
+                            />
                         </div>
                     </div>
                 </div>
                 <div className="w-full xl:w-4/12 p-3">
                     <Colors colors={state.colors} deleteColor={deleteColor} />
                     <SizesList list={sizeList} deleteSize={deleteSize} />
+                    <ImagesPreviews url={preview.image1} heading="Image1" />
+                    <ImagesPreviews url={preview.image2} heading="Image2" />
+                    <ImagesPreviews url={preview.image3} heading="Image3" />
                 </div>
             </div>
         </Wrapper>
