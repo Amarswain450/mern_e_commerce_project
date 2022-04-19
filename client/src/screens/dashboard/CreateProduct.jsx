@@ -1,16 +1,16 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Link } from "react-router-dom"
 import ScreenHeader from "../../components/ScreenHeader"
 import Wrapper from "./Wrapper"
 import Spinner from "../../components/Spinner"
 import { useGetAllCategoriesQuery } from "../../redux-toolkit/services/createService"
-import {TwitterPicker} from "react-color"
+import { TwitterPicker } from "react-color"
 import { v4 as uuidv4 } from 'uuid';
 import Colors from '../../components/Colors'
 import SizesList from '../../components/SizesList'
 
 const CreateProduct = () => {
-    const {data = [], isFetching} = useGetAllCategoriesQuery();
+    const { data = [], isFetching } = useGetAllCategoriesQuery();
 
     const [state, setState] = useState({
         title: "",
@@ -22,16 +22,16 @@ const CreateProduct = () => {
     });
 
     const [sizes] = useState([
-        {name: 'xsm'},
-        {name: 'sm'},
-        {name: 'md'},
-        {name: 'lg'},
-        {name: 'xl'},
-        {name: '1 year'},
-        {name: '2 years'},
-        {name: '3 years'},
-        {name: '4 years'},
-        {name: '5 years'}
+        { name: 'xsm' },
+        { name: 'sm' },
+        { name: 'md' },
+        { name: 'lg' },
+        { name: 'xl' },
+        { name: '1 year' },
+        { name: '2 years' },
+        { name: '3 years' },
+        { name: '4 years' },
+        { name: '5 years' }
     ]);
 
     const [sizeList, setSizeList] = useState([]);
@@ -45,12 +45,12 @@ const CreateProduct = () => {
 
     const saveColors = (color) => {
         const filtered = state.colors.filter((clr) => clr.color !== color.hex)
-        setState({...state, colors: [...filtered, {color: color.hex, id: uuidv4()}]})
+        setState({ ...state, colors: [...filtered, { color: color.hex, id: uuidv4() }] })
     }
 
     const deleteColor = (color) => {
         const filtered = state.colors.filter((clr) => clr.color !== color.color)
-        setState({...state, colors: filtered});
+        setState({ ...state, colors: filtered });
     }
 
     const chooseSize = (sizeObject) => {
@@ -67,59 +67,61 @@ const CreateProduct = () => {
         setSizeList(filtered)
     }
 
+    const imageHandle = () => { }
 
-    return(
+
+    return (
         <Wrapper>
             <ScreenHeader>
-            <Link to="/dashboard/products" className="btn-dark"><i className="bi bi-arrow-left-short"></i> proudcts list</Link>
+                <Link to="/dashboard/products" className="btn-dark"><i className="bi bi-arrow-left-short"></i> proudcts list</Link>
             </ScreenHeader>
             <div className="flex flex-wrap -mx-3">
                 <div className="w-full xl:w-8/12 p-3">
                     <div className="flex flex-wrap">
                         <div className="w-full md:w-6/12 p-3">
                             <label htmlFor="title" className="label">title</label>
-                            <input 
-                                type="text" 
-                                name="title" 
-                                className="form-control" 
-                                id="title" 
+                            <input
+                                type="text"
+                                name="title"
+                                className="form-control"
+                                id="title"
                                 placeholder="title..."
-                                value={state.title} 
+                                value={state.title}
                                 onChange={handleInput}
                             />
                         </div>
                         <div className="w-full md:w-6/12 p-3">
                             <label htmlFor="price" className="label">price</label>
-                            <input 
-                                type="number" 
-                                name="price" 
-                                className="form-control" 
-                                id="price" 
-                                placeholder="price..." 
+                            <input
+                                type="number"
+                                name="price"
+                                className="form-control"
+                                id="price"
+                                placeholder="price..."
                                 value={state.price}
                                 onChange={handleInput}
                             />
                         </div>
                         <div className="w-full md:w-6/12 p-3">
                             <label htmlFor="discount" className="label">discount</label>
-                            <input 
-                                type="number" 
-                                name="discount" 
-                                className="form-control" 
-                                id="discount" 
-                                placeholder="discount..." 
+                            <input
+                                type="number"
+                                name="discount"
+                                className="form-control"
+                                id="discount"
+                                placeholder="discount..."
                                 value={state.discount}
                                 onChange={handleInput}
                             />
                         </div>
                         <div className="w-full md:w-6/12 p-3">
                             <label htmlFor="stock" className="label">stock</label>
-                            <input 
-                                type="number" 
-                                name="stock" 
-                                className="form-control" 
-                                id="stock" 
-                                placeholder="stock..." 
+                            <input
+                                type="number"
+                                name="stock"
+                                className="form-control"
+                                id="stock"
+                                placeholder="stock..."
                                 value={state.stock}
                                 onChange={handleInput}
                             />
@@ -131,26 +133,47 @@ const CreateProduct = () => {
                                 {data?.categories?.map(category => (
                                     <option value={category.name} key={category._id}>{category.name}</option>
                                 ))}
-                            </select> : <Spinner />}  
+                            </select> : <Spinner />}
                         </div>
                         <div className="w-full md:w-6/12 p-3">
                             <label htmlFor="colors" className="label">choose colors</label>
                             <TwitterPicker onChangeComplete={saveColors} />
                         </div>
 
-                        <div className="w-full md:w-6/12 p-3">
+                        <div className="w-full p-3">
                             <label htmlFor="sizes" className="label">choose sizes</label>
-                                {sizes.length > 0 && <div className="flex flex-wrap -mx-3">
-                                    {sizes.map(size => (
-                                        <div key={size.name} className='size' onClick={() => chooseSize(size)}>{size.name}</div>
-                                    ))}
-                                </div>}
+                            {sizes.length > 0 && <div className="flex flex-wrap -mx-3">
+                                {sizes.map(size => (
+                                    <div key={size.name} className='size' onClick={() => chooseSize(size)}>{size.name}</div>
+                                ))}
+                            </div>}
+                        </div>
+
+                        <div className="w-full p-3">
+                            <label htmlFor="image1" className="label">
+                                Image 1
+                            </label>
+                            <input type="file" name="image1" id="image1" className="input-file" onChange={imageHandle} />
+                        </div>
+
+                        <div className="w-full p-3">
+                            <label htmlFor="image2" className="label">
+                                Image 2
+                            </label>
+                            <input type="file" name="image2" id="image2" className="input-file" onChange={imageHandle} />
+                        </div>
+
+                        <div className="w-full p-3">
+                            <label htmlFor="image3" className="label">
+                                Image 3
+                            </label>
+                            <input type="file" name="image3" id="image3" className="input-file" onChange={imageHandle} />
                         </div>
                     </div>
                 </div>
                 <div className="w-full xl:w-4/12 p-3">
-                   <Colors colors={state.colors} deleteColor={deleteColor} />
-                   <SizesList list={sizeList} deleteSize={deleteSize} />
+                    <Colors colors={state.colors} deleteColor={deleteColor} />
+                    <SizesList list={sizeList} deleteSize={deleteSize} />
                 </div>
             </div>
         </Wrapper>
